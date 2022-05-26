@@ -14,19 +14,20 @@ class Post:
 
 
 class Stages:
-    def __init__(self, section, cond=None, agent=None) -> None:
-        #  a stage must have one and only one of steps, stages, parallel, or matrix. 
-        self.section = section
+    def __init__(self, directives,   agent=None) -> None:
+        #  a stage must have one and only one of steps, stages, parallel, or matrix.
+        self.directives = directives
 
 
 class Steps:
     def __init__(self, seq) -> None:
-        self.seq=seq
+        self.seq = seq
         pass
 
 
 class Pipeline:
-    def __init__(self, seq) -> None:
+    def __init__(self, seq, agent="any\n") -> None:
         self.seq = seq
+        self.agent = agent
 # class Parallel:
 # class Matrix

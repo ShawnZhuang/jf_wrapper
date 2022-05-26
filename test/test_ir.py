@@ -16,9 +16,11 @@ class TestDirective(unittest.TestCase):
         ir_printer.print_ir(e)
     def setUp(self):
         print()
+        pass
 
     def tearDown(self):
-        print()
+        # print()
+        pass
 
 
 if __name__ == "__main__":
