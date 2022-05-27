@@ -33,7 +33,10 @@ class Stages:
 
 class Steps:
     def __init__(self, seq) -> None:
-        self.seq = seq
+        if isinstance(seq , list):
+            self.seq = seq
+        else:
+            self.seq = [seq]
         pass
 
 

@@ -1,7 +1,7 @@
 # ir_printer.py
-from multiprocessing.sharedctypes import Value
 import pdb
 from io import StringIO
+from multiprocessing.sharedctypes import Value
 from unicodedata import name
 
 import ir
@@ -89,7 +89,6 @@ class NestWriter:
         """
         def enter_func(ss: StringIO):
             return
-            # ss.write(value)
 
         def exit_func(ss: StringIO):
             return
@@ -123,11 +122,8 @@ class NestWriter:
             self._right_func(self.strstream)
 
     def write_cmd(self, cmd):
-        # if self.newline_after_brace:
         self.print_indent(self.strstream)
         self.strstream.write(cmd)
-        # if self.newline_after_brace:
-        # self.strstream.write("\n")
 
 
 class IRPrinter:
@@ -175,6 +171,8 @@ class IRPrinter:
     def visit_steps(self, steps: ir.sections.Steps):
         with NestWriter(self.ss, "steps", brace=Brace.LARGE, is_inline=False):
             self.visit(steps.seq)
+            # for inst in steps.seq:
+            #     self.visit(inst)
 
     @VisitMapping.register(ir.directives.Environment)
     def visit_stage(self, enviroment: ir.directives.Environment):
@@ -195,14 +193,20 @@ class IRPrinter:
     @VisitMapping.register(str)
     def visit_str(self, cmd):
         self.ss.write(cmd)
-        # with NestWriter(self.ss) as writer:
-        #     writer.write_cmd(cmd)
+
+    @VisitMapping.register(list)
+    def visit_list(self, elem_list):
+        for elem in elem_list:
+            self.visit(elem)
 
     @VisitMapping.register(ir.expr.Echo)
     def visit_echo(self, echo: ir.expr.Echo):
         with NestWriter(self.ss, label="echo",  is_inline=True, brace=Brace.NONE) as writer:
             self.ss.write("\"{}\"".format(echo.info))
-
+    @VisitMapping.register(ir.expr.Bash)
+    def visit_bash(self, run_bash: ir.expr.Bash):
+        with NestWriter(self.ss, label="sh",  is_inline=True, brace=Brace.NONE) as writer:
+            self.ss.write(conver_str_to_text(run_bash.cmd))
     @VisitMapping.register(ir.sections.Agent)
     def visit_agent(self, agent: ir.sections.Agent):
         if agent.agent_type in {Agent.AgentType.ANY, Agent.AgentType.NONE}:

@@ -11,12 +11,16 @@ class TestPipeline(unittest.TestCase):
             ir.directives.Stage(
                 "hello",
                 ir.sections.Steps(
-                    ir.expr.Echo("hello world")
+                    [
+
+                    ir.expr.Echo("hello world"),
+                    ir.expr.Bash("echo hello world")
+                    ]
                 )
             ))
         pipe = ir.sections.Pipeline(
-            # agent=ir.sections.Agent(ir.sections.Agent.AgentType.ANY),
-            agent=ir.sections.Agent(ir.sections.Agent.AgentType.LABEL,"hhh"),
+            agent=ir.sections.Agent(ir.sections.Agent.AgentType.ANY),
+            # agent=ir.sections.Agent(ir.sections.Agent.AgentType.LABEL,"hhh"),
             seq=s1
         )
         ir_printer.print_ir(pipe)
