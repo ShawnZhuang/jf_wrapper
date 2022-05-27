@@ -1,3 +1,4 @@
+from unicodedata import name
 import ir
 from ir import sections
 import ir_printer
@@ -6,19 +7,17 @@ import unittest
 
 class TestPipeline(unittest.TestCase):
     def test_helloworld(self):
-
         s1 = ir.sections.Stages(
             ir.directives.Stage(
+                "hello",
                 ir.sections.Steps(
-                    "echo hello world\n"
+                    ir.expr.Echo("hello world")
                 )
-            )
-
-        )
-        pipe=ir.sections.Pipeline(
-            s1,
-            agent=ir.sections.Agent(),
-             
+            ))
+        pipe = ir.sections.Pipeline(
+            # agent=ir.sections.Agent(ir.sections.Agent.AgentType.ANY),
+            agent=ir.sections.Agent(ir.sections.Agent.AgentType.LABEL,"hhh"),
+            seq=s1
         )
         ir_printer.print_ir(pipe)
 

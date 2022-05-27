@@ -1,8 +1,18 @@
 
 
 class Agent:
-    def __init__(self) -> None:
-        pass
+    class AgentType:
+        ANY = "any"
+        NONE = "none"
+        LABEL = "label"
+        NODE = "node"
+        DOCKER = "docker"
+        DOCKER_FILE = "dockerfile"
+
+    def __init__(self, agent_type: AgentType, value=None) -> None:
+        # value is not valid for type any/none
+        self.agent_type = agent_type
+        self.value = value
 
 
 class Post:
@@ -14,8 +24,10 @@ class Post:
 
 
 class Stages:
-    def __init__(self, directives,   agent=None) -> None:
+    def __init__(self,  directives,   agent=None) -> None:
         #  a stage must have one and only one of steps, stages, parallel, or matrix.
+        # self.name = name
+        self.agent = agent
         self.directives = directives
 
 
@@ -26,7 +38,8 @@ class Steps:
 
 
 class Pipeline:
-    def __init__(self, seq, agent="any\n") -> None:
+    def __init__(self, agent, seq) -> None:
+
         self.seq = seq
         self.agent = agent
 # class Parallel:
