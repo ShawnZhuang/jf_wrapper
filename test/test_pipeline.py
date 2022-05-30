@@ -12,9 +12,8 @@ class TestPipeline(unittest.TestCase):
                 "hello",
                 ir.sections.Steps(
                     [
-
-                    ir.expr.Echo("hello world"),
-                    ir.expr.Bash("echo hello world")
+                        ir.expr.Echo("hello world"),
+                        ir.expr.Bash("echo hello world")
                     ]
                 )
             ))
